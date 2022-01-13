@@ -7,6 +7,15 @@
     <title>노마드 코인</title>
 </head>
 <body>
-    {{.PageTitle}}
+    <h1>{{.PageTitle}}</h1>
+    {{range .Blocks}}
+    <div>
+        <ul>
+            <li>{{.Data}}</li>
+            <li>{{.Hash}}</li>
+            <li>{{.PrevHash}}</li>
+        </ul>
+    </div>
+    {{end}}
 </body>
 </html>

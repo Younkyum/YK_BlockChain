@@ -1,11 +1,22 @@
 package main
 
 import (
-	"github.com/Younkyum/nomadcoin/cli"
-	"github.com/Younkyum/nomadcoin/db"
+	"crypto/sha256"
+	"fmt"
+	"strings"
 )
 
 func main() {
-	defer db.Close()
-	cli.Start()
+	difficutly := 6
+	target := strings.Repeat("0", difficutly)
+	nounce := 1
+	for {
+		hash := fmt.Sprintf("%x", sha256.Sum256([]byte("hello"+fmt.Sprint(nounce))))
+		fmt.Printf("Hash:%s\nTarget:%s\nNounce:%d\n\n", hash, target, nounce)
+		if strings.HasPrefix(hash, target) {
+			return
+		} else {
+			nounce++
+		}
+	}
 }

@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/Younkyum/nomadcoin/blockchain"
 	"github.com/Younkyum/nomadcoin/cli"
+	"github.com/Younkyum/nomadcoin/db"
 )
 
 func main() {
-	blockchain.Blockchain()
+	defer db.Close()
 	cli.Start()
 }

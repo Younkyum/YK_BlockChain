@@ -1,16 +1,13 @@
 package blockchain
 
 import (
-	"crypto/sha256"
 	"errors"
-	"fmt"
 	"strings"
+	"time"
 
 	"github.com/Younkyum/nomadcoin/db"
 	"github.com/Younkyum/nomadcoin/utils"
 )
-
-const difficulty int = 2
 
 type Block struct {
 	Data       string `json:"data"`
@@ -19,6 +16,7 @@ type Block struct {
 	Height     int    `json:"height"`
 	Difficutly int    `json:"difficulty"`
 	Nonce      int    `json:"nonce"`
+	Timestamp  int    `json:"timestamp"`
 }
 
 func (b *Block) persist() {
@@ -44,7 +42,8 @@ func FindBlock(hash string) (*Block, error) {
 func (b *Block) mine() {
 	target := strings.Repeat("0", b.Difficutly)
 	for {
-		hash := fmt.Sprintf("%x", sha256.Sum256([]byte(fmt.Sprint(b))))
+		b.Timestamp = int(time.Now().Unix())
+		hash := utils.Hash(b)
 		if strings.HasPrefix(hash, target) {
 			b.Hash = hash
 			break

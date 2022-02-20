@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/Younkyum/nomadcoin/blockchain"
-	"github.com/Younkyum/nomadcoin/utils"
 	"github.com/gorilla/mux"
 )
 
@@ -25,10 +24,6 @@ type urlDescription struct {
 	Method      string `json:"method"`
 	Description string `json:"description"`
 	Payload     string `jsoh:"payload,omitempty"`
-}
-
-type addBlockBody struct {
-	Message string
 }
 
 type errorResponse struct {
@@ -72,9 +67,7 @@ func blocks(rw http.ResponseWriter, r *http.Request) {
 	case "GET":
 		json.NewEncoder(rw).Encode(blockchain.Blockchain().Blocks())
 	case "POST":
-		var addBlcokBody addBlockBody
-		utils.HandleErr(json.NewDecoder(r.Body).Decode(&addBlcokBody))
-		blockchain.Blockchain().AddBlock(addBlcokBody.Message)
+		blockchain.Blockchain().AddBlock()
 		rw.WriteHeader(http.StatusCreated)
 	}
 }
